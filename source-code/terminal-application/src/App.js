@@ -10,16 +10,16 @@ const style = {
 class App extends Component {
 
     redirectToHadoop(){
-        window.location.href = 'http://34.135.237.146:30963/';
+        window.location.href = 'http://34.123.190.66:30963/';
     }
     redirectToJupyterNotebook(){
-        window.location.href = 'http://34.135.237.146:31749/';
+        window.location.href = 'http://34.123.190.66:31749/';
     }
     redirectToSonarqube(){
-        window.location.href = 'http://34.135.237.146:30070/';
+        window.location.href = 'http://34.123.190.66:30070/';
     }
     redirectToSpark(){
-        window.location.href = 'http://34.135.237.146:30299/';
+        window.location.href = 'http://34.123.190.66:30299/';
     }
 
     render() {
