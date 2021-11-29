@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: datanode2
+spec:
+ strategy:
+   rollingUpdate:
+     maxSurge: 1
+     maxUnavailable: 1
+   type: RollingUpdate
+ replicas: 1
+ selector:
+   matchLabels:
+     app: datanode2
+ template:
+   metadata:
+     labels:
+       app: datanode2
+   spec:
+     containers:
+       - name: datanode2
+         image: anyuanyu/hadoop-datanode
+         ports:
+           - containerPort: 9864

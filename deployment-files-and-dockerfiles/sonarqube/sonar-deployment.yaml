@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonar
+  labels:
+    app: app-sonar
+spec:
+  selector:
+    matchLabels:
+      app: app-sonar
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: app-sonar
+    spec:
+      containers:
+        - image: anyuanyu/sonarqubescanner
+          imagePullPolicy: Always
+          name: sonar
+          ports:
+            - containerPort: 9000

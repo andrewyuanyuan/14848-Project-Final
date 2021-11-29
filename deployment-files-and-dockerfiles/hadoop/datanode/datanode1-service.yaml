@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: datanode1
+  name: datanode1
+spec:
+  ports:
+    - port: 9864
+      protocol: TCP
+      targetPort: 9864
+      nodePort: 30064
+  selector:
+    app: datanode1
+  type: NodePort

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: namenode
+  name: namenode
+spec:
+  ports:
+    - port: 9870
+      name: gui
+      protocol: TCP
+      targetPort: 9870
+      nodePort: 30070
+    - port: 9000
+      name: internal
+      protocol: TCP
+      targetPort: 9000
+      nodePort: 30001
+  selector:
+    app: namenode
+  type: NodePort

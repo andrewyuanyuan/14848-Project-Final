@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: namenode
+spec:
+ strategy:
+   rollingUpdate:
+     maxSurge: 1
+     maxUnavailable: 1
+   type: RollingUpdate
+ replicas: 1
+ selector:
+   matchLabels:
+     app: namenode
+ template:
+   metadata:
+     labels:
+       app: namenode
+   spec:
+     containers:
+       - name: namenode
+         image: anyuanyu/hadoop-namenode
+         ports:
+           - containerPort: 9870
+           - containerPort: 9000
