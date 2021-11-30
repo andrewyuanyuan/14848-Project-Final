@@ -3,8 +3,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: jupyter-notebook-service
-  name: jupyter-notebook-service
+    app: jupyter
+  name: jupyter
 spec:
   ports:
     - port: 8888
@@ -12,5 +12,5 @@ spec:
       targetPort: 8888
       nodePort: 30963
   selector:
-    app: jupyter-notebook-service
+    app: jupyter
   type: NodePort

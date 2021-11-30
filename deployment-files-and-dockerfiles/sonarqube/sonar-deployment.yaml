@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: sonar
   labels:
-    app: app-sonar
+    app: sonar
 spec:
   selector:
     matchLabels:
-      app: app-sonar
+      app: sonar
   replicas: 1
   minReadySeconds: 15
   strategy:
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       labels:
-        app: app-sonar
+        app: sonar
     spec:
       containers:
         - image: anyuanyu/sonarqubescanner

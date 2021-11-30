@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: jupyter
   labels:
-    app: app-jupyter
+    app: jupyter
 spec:
   selector:
     matchLabels:
-      app: app-jupyter
+      app: jupyter
   replicas: 1
   minReadySeconds: 15
   strategy:
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       labels:
-        app: app-jupyter
+        app: jupyter
     spec:
       containers:
         - image: jupyter/base-notebook
