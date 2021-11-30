@@ -232,10 +232,10 @@ cd deployment-files-and-dockerfiles/
 kubectl apply -f ./hadoop/namenode/namenode-deployment.yaml
 kubectl apply -f ./hadoop/namenode/namenode-service.yaml
 # datanode
-kubectl apply -f ./hadoop/namenode/datanode1-deployment.yaml
-kubectl apply -f ./hadoop/namenode/datanode2-deployment.yaml
-kubectl apply -f ./hadoop/namenode/datanode1-service.yaml
-kubectl apply -f ./hadoop/namenode/datanode2-service.yaml
+kubectl apply -f ./hadoop/datanode/datanode1-deployment.yaml
+kubectl apply -f ./hadoop/datanode/datanode2-deployment.yaml
+kubectl apply -f ./hadoop/datanode/datanode1-service.yaml
+kubectl apply -f ./hadoop/datanode/datanode2-service.yaml
 
 # Jupyter notebook
 kubectl apply -f ./jupyter-notebook/jupyter-deployment.yaml
@@ -256,7 +256,7 @@ gcloud compute firewall-rules create sonarqube --allow tcp:30299
 gcloud compute firewall-rules create spark --allow tcp:31749
 
 # Deploy and create service for Terminal Application
-sudo sh injectPodIP.sh
+sudo sh ./terminal-application-final/injectPodIP.sh
 ```
 
 Finally, we can access the Big Data Toolbox by the external IP address shown in the `Services & Ingress` page.
