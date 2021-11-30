@@ -5,7 +5,7 @@
 
 
 ## Walkthrough Video
-You can access my walkthrough video throught the link below
+You can access my walkthrough video through the link below:
 * **[Code Base and Deployment Process](https://youtu.be/TSpcDZiw6CY)**
 * **[Functionality Demo](https://youtu.be/IAepOmUM3Oo)**
 
