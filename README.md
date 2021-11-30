@@ -1,5 +1,3 @@
-[TOC]
-
 # 14848-project-Final
 
 * The deployment files (including deploying images and creating services files) and the Dockerfiles are included in [deployment-files-and-dockerfiles](https://github.com/andrewyuanyuan/14848-project/tree/main/deployment-files-and-dockerfiles) folder.
@@ -81,7 +79,7 @@ docker push gcr.io/[project name]/anyuanyu/[image name]
 
 After running these commands, you can see all the images in your `Container Registry`, as the pictures shown below.
 
-![2](C:\Users\Andew\Desktop\final\2.png)
+![2](https://raw.githubusercontent.com/andrewyuanyuan/14848-Project-Final/main/screenshots/2.png)
 
 ![3](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/3.png?raw=true)
 
@@ -129,7 +127,7 @@ Here I choose to **expose four worker images (Hadoop, Spark, Jupyter notebook an
 
 **Here is all the services I created, and you can see their port configuration in the screenshot below.**
 
-![7](C:\Users\Andew\Desktop\final\7.png)
+![7](https://raw.githubusercontent.com/andrewyuanyuan/14848-Project-Final/main/screenshots/7.png)
 
 Besides, After creating these services, we also need to set the firewall rules in the cloud shell or `firewall` of GKE for each service. We can obtain node ports by clicking the service name. For example, for our `jupyter-notebook-service`, the port is `30963`.
 
@@ -143,7 +141,7 @@ gcloud compute firewall-rules create jupyter-notebook-service --allow tcp:30963
 
 After these step, we can use `kubectl get nodes -o wide` to get our service IP, where we can see all the available node and their IPs. Then, by enter `NodeIP:NodePort` in your browser, you can access the service. E.g. In my case, the service address for Jupyter-notebook-service is `http://34.123.190.66:30963/`
 
-![9](C:\Users\Andew\Desktop\final\9.png)
+![9](https://raw.githubusercontent.com/andrewyuanyuan/14848-Project-Final/main/screenshots/9.png)
 
 #### Path 2: Using service.yaml to expose
 
@@ -161,11 +159,11 @@ As you know, we can't know the IP addresses for different services until we crea
 
 To this end, I used a variable called `TMP_IP` to replace the actual Node IP addresses in `index.html` I wrote. e.g.
 
-![20](C:\Users\Andew\Desktop\final\20.png)
+![20](https://raw.githubusercontent.com/andrewyuanyuan/14848-Project-Final/main/screenshots/20.png)
 
 Then we use `sed` command to replace `TMP_IP` with an environment variable called `POD_IP`, which is declared in the deployment file of the terminal application and has an undetermined value `TRUE_POD_IP` as the picture shown below:
 
-![21](C:\Users\Andew\Desktop\final\21.png)
+![21](https://raw.githubusercontent.com/andrewyuanyuan/14848-Project-Final/main/screenshots/21.png)
 
 We first upload the terminal docker image to Container Registry. Before we run the deployment file, we run these two commands to get and out the external node IP address and use the actual node IP address to replace `TRUE_POD_IP`
 
@@ -178,7 +176,7 @@ sed -i "s/TRUE_POD_IP/$NODE_IP/" ./terminal-application-deployment.yaml
 
 After we run these two commands, as you can see, the `TRUE_POD_IP` is replaced with the actual node IP addresses.
 
-![22](C:\Users\Andew\Desktop\final\22.png)
+![22](https://raw.githubusercontent.com/andrewyuanyuan/14848-Project-Final/main/screenshots/22.png)
 
 Finally, we use `sed -i "s/TMP_IP/$replace/" /usr/share/nginx/html/index.html` command, to replace the `TMP_IP` in `index.html` with the actual Node IP address.
 
@@ -259,7 +257,7 @@ sudo sh injectPodIP.sh
 
 Finally, we can access the Big Data Toolbox by the external IP address shown in the `Services & Ingress` page.
 
-![23](C:\Users\Andew\Desktop\final\23.png)
+![23](https://raw.githubusercontent.com/andrewyuanyuan/14848-Project-Final/main/screenshots/23.png)
 
 ## Application Demo
 
@@ -267,13 +265,13 @@ After all the steps above, we now have five services and we can run them now.
 
 #### Terminal application
 
-![10](C:\Users\Andew\Desktop\final\10.png)
+![10](https://raw.githubusercontent.com/andrewyuanyuan/14848-Project-Final/main/screenshots/10.png)
 
 You can click the items in the toolbox to access them.
 
 #### Jupyter Notebook
 
-![12](C:\Users\Andew\Desktop\final\9.png)
+![12](https://raw.githubusercontent.com/andrewyuanyuan/14848-Project-Final/main/screenshots/12.png)
 
 #### Spark
 
