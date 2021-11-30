@@ -1,4 +1,6 @@
-# 14848-project
+[TOC]
+
+# 14848-project-Final
 
 * The deployment files (including deploying images and creating services files) and the Dockerfiles are included in [deployment-files-and-dockerfiles](https://github.com/andrewyuanyuan/14848-project/tree/main/deployment-files-and-dockerfiles) folder.
 * All the source code I wrote are inside the [source-code](https://github.com/andrewyuanyuan/14848-project/tree/main/source-code) folder (including source code for `sonar-scanner`and my `terminal-application`
@@ -23,15 +25,11 @@
 
 ## Docker Images used
 
-* Hadoop: [anyuanyu/hadoop-datanode](https://hub.docker.com/repository/docker/anyuanyu/hadoop-datanode) and [anyuanyu/hadoop-namenode](https://hub.docker.com/r/anyuanyu/hadoop-namenode)
-
-* Spark: [bitnami/spark](bitnami/spark)
-
-* Sonarqube and Sonar scanner: [anyuanyu/sonarqubescanner](https://hub.docker.com/r/anyuanyu/sonarqubescanner) (source code under [source-code](https://github.com/andrewyuanyuan/14848-project/tree/main/source-code) folder)
-
-* Jupyter notebook: [jupyter/base-notebook](https://hub.docker.com/r/jupyter/base-notebook)
-
-* Terminal application: [anyuanyu/project-terminal-application](anyuanyu/project-terminal-application) (source code under [source-code](https://github.com/andrewyuanyuan/14848-project/tree/main/source-code) folder)
+* **Hadoop**: [anyuanyu/hadoop-datanode](https://hub.docker.com/repository/docker/anyuanyu/hadoop-datanode) and [anyuanyu/hadoop-namenode](https://hub.docker.com/r/anyuanyu/hadoop-namenode)
+* **Spark**: [bitnami/spark](bitnami/spark)
+* **Sonarqube and Sonar scanner**: [anyuanyu/sonarqubescanner](https://hub.docker.com/r/anyuanyu/sonarqubescanner) (source code under [source-code](https://github.com/andrewyuanyuan/14848-project/tree/main/source-code) folder)
+* **Jupyter notebook**: [jupyter/base-notebook](https://hub.docker.com/r/jupyter/base-notebook)
+* **Terminal application (final)**: [anyuanyu/project-terminal-application-final](https://hub.docker.com/repository/docker/anyuanyu/project-terminal-application-final) (source code under [source-code/terminal-application-final](https://github.com/andrewyuanyuan/14848-Project-Final/tree/main/deployment-files-and-dockerfiles/terminal-application-final) folder)
 
 ## Steps to get application work
 
@@ -43,7 +41,7 @@ For **Hadoop**, I included all the environment variables in my Dockerfiles to ma
 
 For **SonarQube**, in order to run it in GCP, I built it upon the source code of this [project](https://hub.docker.com/_/sonarqube), customize my Dockerfile and build my own image.
 
-For **terminal application**, I used React to build it frontend interface.
+For **terminal application**, I used Bootstrap to build its frontend interface.
 
 You can see all the Dockerfiles and source codes in my repository.
 
@@ -66,7 +64,7 @@ I used the following docker images in this step, you can check each of them by c
 anyuanyu/hadoop-datanode
 anyuanyu/hadoop-namenode
 anyuanyu/sonarqubescanner
-anyuanyu/project-terminal-application
+anyuanyu/project-terminal-application-final
 jupyter/base-notebook
 bitnami/spark
 ```
@@ -83,7 +81,7 @@ docker push gcr.io/[project name]/anyuanyu/[image name]
 
 After running these commands, you can see all the images in your `Container Registry`, as the pictures shown below.
 
-![2](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/2.png?raw=true)
+![2](C:\Users\Andew\Desktop\final\2.png)
 
 ![3](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/3.png?raw=true)
 
@@ -131,7 +129,7 @@ Here I choose to **expose four worker images (Hadoop, Spark, Jupyter notebook an
 
 **Here is all the services I created, and you can see their port configuration in the screenshot below.**
 
-![7](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/7.png?raw=true)
+![7](C:\Users\Andew\Desktop\final\7.png)
 
 Besides, After creating these services, we also need to set the firewall rules in the cloud shell or `firewall` of GKE for each service. We can obtain node ports by clicking the service name. For example, for our `jupyter-notebook-service`, the port is `30963`.
 
@@ -140,12 +138,12 @@ Besides, After creating these services, we also need to set the firewall rules i
 Then we use the command below to set up firewall rules for this service.
 
 ```bash
-gcloud compute firewall-rules create jupyter-notebook-service --allow tcp: 3-30963
+gcloud compute firewall-rules create jupyter-notebook-service --allow tcp:30963
 ```
 
-After these step, we can use `kubectl get nodes -o wide` to get our service IP, where we can see all the available node and their IPs. Then, by enter `NodeIP:NodePort` in your browser, you can access the service. E.g. In my case, the service address for Jupyter-notebook-service is `http://34.135.237.146:30963/`
+After these step, we can use `kubectl get nodes -o wide` to get our service IP, where we can see all the available node and their IPs. Then, by enter `NodeIP:NodePort` in your browser, you can access the service. E.g. In my case, the service address for Jupyter-notebook-service is `http://34.123.190.66:30963/`
 
-![9](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/9.png?raw=true)
+![9](C:\Users\Andew\Desktop\final\9.png)
 
 #### Path 2: Using service.yaml to expose
 
@@ -157,37 +155,133 @@ kubectl apply -f [image name]-service.yaml
 
 You can see all my service-creating files in [deployment-files-and-dockerfiles](https://github.com/andrewyuanyuan/14848-project/tree/main/deployment-files-and-dockerfiles) folder.
 
+## Automatically replace Node IP in Terminal Application
+
+As you know, we can't know the IP addresses for different services until we create them in GKE, therefore, I used to adopt the hard code method in the index file of terminal application to make its redirection functional. However, since we can not do the same thing in the final checkpoint, we need another method to enable my application do the IP addresses injection automatically.
+
+To this end, I used a variable called `TMP_IP` to replace the actual Node IP addresses in `index.html` I wrote. e.g.
+
+![20](C:\Users\Andew\Desktop\final\20.png)
+
+Then we use `sed` command to replace `TMP_IP` with an environment variable called `POD_IP`, which is declared in the deployment file of the terminal application and has an undetermined value `TRUE_POD_IP` as the picture shown below:
+
+![21](C:\Users\Andew\Desktop\final\21.png)
+
+We first upload the terminal docker image to Container Registry. Before we run the deployment file, we run these two commands to get and out the external node IP address and use the actual node IP address to replace `TRUE_POD_IP`
+
+```bash
+# Get and filter out the external node IP address
+NODE_IP=$(kubectl get nodes -o jsonpath='{ $.items[0].status.addresses[?(@.type=="ExternalIP")].address }')
+# We use the value we get from the above command to replce the TRUE_POD_IP variable in deployment file
+sed -i "s/TRUE_POD_IP/$NODE_IP/" ./terminal-application-deployment.yaml
+```
+
+After we run these two commands, as you can see, the `TRUE_POD_IP` is replaced with the actual node IP addresses.
+
+![22](C:\Users\Andew\Desktop\final\22.png)
+
+Finally, we use `sed -i "s/TMP_IP/$replace/" /usr/share/nginx/html/index.html` command, to replace the `TMP_IP` in `index.html` with the actual Node IP address.
+
+Because the nodePorts are declared in the `service creation files`, they're always fixed and we don't need to change them.
+
+**By this means, we don't need to hard code the service URI in the HTML file because the scripts will take care that for us.**
+
+## Overall steps to set up my application
+
+Here are all the steps I followed to deploy my Big Data Processing Toolbox
+
+```bash
+# Prepare images
+
+# Jupyter Notebook
+docker pull jupyter/base-notebook
+docker tag jupyter/base-notebook gcr.io/the-byway-327123/jupyter/base-notebook
+docker push gcr.io/the-byway-327123/jupyter/base-notebook
+# Spark
+docker pull bitnami/spark
+docker tag bitnami/spark gcr.io/the-byway-327123/bitnami/spark
+docker push gcr.io/the-byway-327123/bitnami/spark
+# Hadoop Namenode
+docker pull anyuanyu/hadoop-namenode
+docker tag anyuanyu/hadoop-namenode gcr.io/the-byway-327123/anyuanyu/hadoop-namenode
+docker push gcr.io/the-byway-327123/anyuanyu/hadoop-namenode
+# Hadoop Datanode
+docker pull anyuanyu/hadoop-datanode
+docker tag anyuanyu/hadoop-datanode gcr.io/the-byway-327123/anyuanyu/hadoop-datanode
+docker push gcr.io/the-byway-327123/anyuanyu/hadoop-datanode
+# Sonarqube
+docker pull anyuanyu/sonarqubescanner
+docker tag anyuanyu/sonarqubescanner gcr.io/the-byway-327123/anyuanyu/sonarqubescanner
+docker push gcr.io/the-byway-327123/anyuanyu/sonarqubescanner
+# Terminal application
+docker pull anyuanyu/project-terminal-application-final
+docker tag anyuanyu/project-terminal-application-final gcr.io/the-byway-327123/anyuanyu/project-terminal-application-final
+docker push gcr.io/the-byway-327123/anyuanyu/project-terminal-application-final
+
+# Clone my repository to your GCP
+git clone https://github.com/andrewyuanyuan/14848-Project-Final.git
+cd 14848-Project-Final/
+cd deployment-files-and-dockerfiles/
+
+# Deploy images and create services
+
+# Hadoop
+# namenode
+kubectl apply -f ./hadoop/namenode/namenode-deployment.yaml
+kubectl apply -f ./hadoop/namenode/namenode-service.yaml
+# datanode
+kubectl apply -f ./hadoop/namenode/datanode1-deployment.yaml
+kubectl apply -f ./hadoop/namenode/datanode2-deployment.yaml
+kubectl apply -f ./hadoop/namenode/datanode1-service.yaml
+kubectl apply -f ./hadoop/namenode/datanode2-service.yaml
+
+# Jupyter notebook
+kubectl apply -f ./jupyter-notebook/jupyter-deployment.yaml
+kubectl apply -f ./jupyter-notebook/jupyter-service.yaml
+
+# Sonarqube
+kubectl apply -f ./sonarqube/sonar-deployment.yaml
+kubectl apply -f ./sonarqube/sonar-service.yaml
+
+# Spark
+kubectl apply -f ./spark/spark-deployment.yaml
+kubectl apply -f ./spark/spark-service.yaml
+
+# Set firewall rules
+gcloud compute firewall-rules create namenode --allow tcp:30070
+gcloud compute firewall-rules create jupyter-notebook --allow tcp:$30963
+gcloud compute firewall-rules create sonarqube --allow tcp:30299
+gcloud compute firewall-rules create spark --allow tcp:31749
+
+# Deploy and create service for Terminal Application
+sudo sh injectPodIP.sh
+```
+
+Finally, we can access the Big Data Toolbox by the external IP address shown in the `Services & Ingress` page.
+
+![23](C:\Users\Andew\Desktop\final\23.png)
+
 ## Application Demo
 
 After all the steps above, we now have five services and we can run them now. 
 
 #### Terminal application
 
-My external IP address for my terminal application is `34.135.79.151:80`
-
-![10](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/10.png?raw=true)
-
-![11](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/11.png?raw=true)
+![10](C:\Users\Andew\Desktop\final\10.png)
 
 You can click the items in the toolbox to access them.
 
 #### Jupyter Notebook
 
-The IP address for my Jupyter Notebook is `http://34.135.237.146:30963/`
-
-![12](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/12.png?raw=true)
+![12](C:\Users\Andew\Desktop\final\9.png)
 
 #### Spark
-
-The IP address for my Spark service is `http://34.135.237.146:31749/`
 
 ![13](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/13.png?raw=true)
 
 #### Hadoop
 
-The IP address for my Spark service is `http://34.135.237.146:30070/`, which has two namenodes
-
-![14](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/14.png?raw=true)
+**Including one master node and worker nodes**![14](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/14.png?raw=true)
 
 ![15](https://github.com/andrewyuanyuan/14848-project/blob/main/screenshots/15.png?raw=true)
 
