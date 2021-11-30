@@ -251,7 +251,7 @@ kubectl apply -f ./spark/spark-service.yaml
 
 # Set firewall rules
 gcloud compute firewall-rules create namenode --allow tcp:30070
-gcloud compute firewall-rules create jupyter-notebook --allow tcp:$30963
+gcloud compute firewall-rules create jupyter-notebook --allow tcp:30963
 gcloud compute firewall-rules create sonarqube --allow tcp:30299
 gcloud compute firewall-rules create spark --allow tcp:31749
 
