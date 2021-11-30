@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment                                          # 1
+metadata:
+  name: terminal-application
+  labels:
+    app: terminal-application
+spec:
+  selector:
+    matchLabels:
+      app: terminal-application-final
+  replicas: 2                                            
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate                                   
+    rollingUpdate: 
+      maxUnavailable: 1                                   
+      maxSurge: 1                                         
+  template:
+    metadata:
+      labels:
+        app: terminal-application-final                               
+    spec:
+      containers:
+        - image: anyuanyu/project-terminal-application-final
+          imagePullPolicy: Always                         
+          name: terminal-application-final
+          ports:
+            - containerPort: 80
+          env:
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MY_POD_IP
+              value: MY_NODE_IP
