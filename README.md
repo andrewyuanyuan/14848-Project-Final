@@ -3,6 +3,10 @@
 * The deployment files (including deploying images and creating services files) and the Dockerfiles are included in [deployment-files-and-dockerfiles](https://github.com/andrewyuanyuan/14848-project/tree/main/deployment-files-and-dockerfiles) folder.
 * All the source code I wrote are inside the [source-code](https://github.com/andrewyuanyuan/14848-project/tree/main/source-code) folder (including source code for `sonar-scanner`and my `terminal-application`
 
+
+## Walkthrough Video
+* **[Functionality Demo](https://www.youtube.com/watch?v=IAepOmUM3Oo)**
+
 ## Reference
 
 * Hadoop
