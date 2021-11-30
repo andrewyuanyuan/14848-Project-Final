@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment                                          # 1
 metadata:
-  name: terminal-application
+  name: terminal-application-final
   labels:
-    app: terminal-application
+    app: terminal-application-final
 spec:
   selector:
     matchLabels:
