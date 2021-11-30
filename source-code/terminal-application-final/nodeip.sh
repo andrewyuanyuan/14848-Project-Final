@@ -1,5 +1,6 @@
 #!bin/sh
 
-replace=$MY_POD_IP
+replace=$POD_IP
 
-sed -i "s/POD_IP/$replace/" /usr/share/nginx/html/index.html
+# We use the envorinmental variable POD_IP to replace the TMP_IP in the index.html file
+sed -i "s/TMP_IP/$replace/" /usr/share/nginx/html/index.html
