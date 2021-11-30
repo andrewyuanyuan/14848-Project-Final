@@ -256,7 +256,7 @@ gcloud compute firewall-rules create sonarqube --allow tcp:30299
 gcloud compute firewall-rules create spark --allow tcp:31749
 
 # Deploy and create service for Terminal Application
-sudo sh ./terminal-application-final/injectPodIP.sh
+sh ./terminal-application-final/injectPodIP.sh
 ```
 
 Finally, we can access the Big Data Toolbox by the external IP address shown in the `Services & Ingress` page.
